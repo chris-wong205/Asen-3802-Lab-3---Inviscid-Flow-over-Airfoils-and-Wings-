@@ -19,7 +19,7 @@ function [x,y] = NACA_Airfoil_Gen(NACA_num, chord_length, half_num_of_panels)
     
     %Use Circular clustering for x
     theta = linspace(0,pi, half_num_of_panels);
-    x = (chord_length/2).*(cos(theta) + 1);
+    x = (chord_length/2).*(1-cos(theta));
 
     %Calculate thickness distribution
     y_t = (t./.2).*(chord_length).*(.2969.*sqrt(x./chord_length) -.1260 .* (x./chord_length)-.3516 .* (x./chord_length).^2+.2843.*(x./chord_length).^3-.1036.*(x./chord_length).^4);
@@ -43,8 +43,8 @@ function [x,y] = NACA_Airfoil_Gen(NACA_num, chord_length, half_num_of_panels)
     y_l = y_c - y_t.*cos(xi);
     
     % Arrange coordinates so they start at TE and go aroung CW
-    x_u = flip(x_u);
-    y_u = flip(y_u);
+    x_l = flip(x_l);
+    y_l = flip(y_l);
     
     % Delete repeated instance of 0 coordinate and put them all in one set
     x = [x_l, x_u(2:end)];
