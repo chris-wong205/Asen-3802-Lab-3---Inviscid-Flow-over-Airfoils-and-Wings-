@@ -9,7 +9,7 @@
 % y = Corresponding y values
 
 
-function [x,y] = NACA_Airfoil_Gen(NACA_num, chord_length, half_num_of_panels)
+function [x,y,xCamber,yCamber] = NACA_Airfoil_Gen(NACA_num, chord_length, half_num_of_panels)
     
     % Split NACA code into parts
     m = str2double(NACA_num(1))/100; % Max Camber - % chord
@@ -42,6 +42,8 @@ function [x,y] = NACA_Airfoil_Gen(NACA_num, chord_length, half_num_of_panels)
     y_u = y_c + y_t.*cos(xi);
     y_l = y_c - y_t.*cos(xi);
     
+   yCamber = (y_l+y_u)./2;    % This can calculate the camber line for each airfoil
+   xCamber = x_l;
     % Arrange coordinates so they start at TE and go aroung CW
     x_l = flip(x_l);
     y_l = flip(y_l);
@@ -49,5 +51,7 @@ function [x,y] = NACA_Airfoil_Gen(NACA_num, chord_length, half_num_of_panels)
     % Delete repeated instance of 0 coordinate and put them all in one set
     x = [x_l, x_u(2:end)];
     y = [y_l, y_u(2:end)];
+
+
 
 end
