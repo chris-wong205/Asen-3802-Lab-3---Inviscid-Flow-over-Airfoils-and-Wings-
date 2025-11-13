@@ -1,10 +1,11 @@
 function [e,c_L,c_Di] = PLLT(b,a0_t,a0_r,c_t,c_r,aero_t,aero_r,geo_t,geo_r,N)
 
 i = (1:N);
-%% Create linear functions WRT theta variable for all spanwise variables
+%% Create linear
+% functions WRT theta variable for all spanwise variables
 theta_i = (i.*pi)/(2.*N);
-a_theta = -(a0_t-a0_r)*cos(theta_i) + a0_r;
-c_theta = -(c_t-c_r)*cos(theta_i) + c_r;
+c_theta = c_r - (c_r - c_t).*cos(theta_i);
+a_theta = a0_r - (a0_r - a0_t).*cos(theta_i);
 aero_theta = -(aero_t-aero_r)*cos(theta_i) + aero_r;
 geo_theta = -(geo_t-geo_r)*cos(theta_i) + geo_r;
 
@@ -22,7 +23,7 @@ A_coeffs = (M\d)';
 % Caculate delta
 delta = 0;
 for i = 2:N
-    delta = delta + i*(A_coeffs(i)/A_coeffs(1))^2;
+    delta = delta + (2*i - 1) * (A_coeffs(i)/A_coeffs(1))^2;
 end
 
 % Calculate planform
