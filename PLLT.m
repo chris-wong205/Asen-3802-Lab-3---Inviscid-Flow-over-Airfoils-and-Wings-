@@ -6,8 +6,8 @@ i = (1:N);
 theta_i = (i.*pi)/(2.*N);
 c_theta = c_r - (c_r - c_t).*cos(theta_i);
 a_theta = a0_r - (a0_r - a0_t).*cos(theta_i);
-aero_theta = -(aero_t-aero_r)*cos(theta_i) + aero_r;
-geo_theta = -(geo_t-geo_r)*cos(theta_i) + geo_r;
+aero_theta = (aero_t-aero_r)*cos(theta_i) + aero_r;
+geo_theta = (geo_t-geo_r)*cos(theta_i) + geo_r;
 
 %% Create matrix and vector of linear equation coefficients
  for m = 1:N
@@ -22,9 +22,10 @@ A_coeffs = (M\d)';
 
 % Caculate delta
 delta = 0;
-for i = 2:N
-    delta = delta + (2*i - 1) * (A_coeffs(i)/A_coeffs(1))^2;
+for k = 2:N
+    delta = delta + (2*k - 1) * (A_coeffs(k)/A_coeffs(1))^2;
 end
+
 
 % Calculate planform
 S = (c_t+c_r)*(b/2);
@@ -37,4 +38,9 @@ c_Di = ((c_L^2)*(1+delta))/(pi*AR);
 
 % Calculate span efficiency factor
 e = 1/(1+delta);
+disp("RUNNING NEW PLLT VERSION")
+
 end
+
+
+
